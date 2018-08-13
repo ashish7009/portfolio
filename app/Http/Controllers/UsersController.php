@@ -17,7 +17,6 @@ class UsersController extends Controller
     }
    
     public function register(Request $request){
-    	
         $user = $this->user->create([
           'name' => $request->get('name'),
           'email' => $request->get('email'),
@@ -43,4 +42,39 @@ class UsersController extends Controller
         return response()->json(['result' => $user]);
     }
 
+    public function listUsers()
+    {
+    	$model = User::all();
+    	return $model;
+    }
+
+    public function addUser(Request $request)
+    {
+    	$model = new User;
+    	$model->password = bcrypt($request->get('password'));
+        $model->fill($request->except(['token','password']));
+        $model->save();
+        return response()->json(['status'=>true,'message'=>'User created successfully','data'=>$model]);
+    }
+
+    public function editUser($id)
+    {
+    	$model = User::find($id);
+    	return $model;
+    }
+
+    public function updateUser(Request $request,$id)
+    {	
+		$model = User::find($id);
+		$model->fill($request->except(['token']));
+		$model->save();
+		return response()->json(['status'=>true,'message'=>'User updated successfully','data'=>$model]);
+    }
+
+    public function deleteUser($id)
+    {
+    	$model = User::find($id);
+        $model->delete();
+        return response()->json(['status'=>true,'message'=>'User deleted successfully','data'=>$model]);
+    }
 }
