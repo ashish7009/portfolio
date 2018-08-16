@@ -12,5 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    $routeCollection = Route::getRoutes();
+    foreach ($routeCollection as $key => $value) {
+    	dump($value->uri);
+    }
 });

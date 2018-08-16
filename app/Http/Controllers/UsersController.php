@@ -19,11 +19,13 @@ class UsersController extends Controller
     }
    
     public function register(Request $request){
+
         $user = $this->user->create([
           'name' => $request->get('name'),
           'email' => $request->get('email'),
           'password' => bcrypt($request->get('password'))
         ]);
+       
         return response()->json(['status'=>true,'message'=>'User created successfully','data'=>$user]);
     }
     
@@ -40,6 +42,7 @@ class UsersController extends Controller
         return response()->json(compact('token'));
     }
     public function getAuthUser(Request $request){
+        
         $user = JWTAuth::toUser($request->token);
         return response()->json(['result' => $user]);
     }
