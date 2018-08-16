@@ -17,9 +17,9 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 Route::post('auth/register', 	['as'=>'register',	'uses'=>'UsersController@register']);
-Route::post('auth/login', 		'UsersController@login');
+Route::post('auth/login', 	['as'=>'login',	'uses'=>'UsersController@login']);
 Route::group(['middleware' => 	['jwt.auth', 'role']], function () {
-    Route::get('user', 		'UsersController@getAuthUser');
+    Route::get('user', 		['as'=>'current.user',    'uses'=>'UsersController@getAuthUser']);
 
     Route::get('users',				['as'=>'list.user','uses'=>'UsersController@listUsers']);
     Route::post('user/add',			['as'=>'add.user','uses'=>'UsersController@addUser']);

@@ -17,6 +17,7 @@ class role
      */
     public function handle($request, Closure $next)
     {
+        $role = null;
         $user = JWTAuth::toUser($request->token);
         $permission_level = $user->permission;
         if ($permission_level == 1) {
@@ -26,8 +27,8 @@ class role
             $role = "account_manager";
         }
         if (RoleController::hasAccess($role)) {
-            return "access_denied";
+            return $next($request);
         }
-        return $next($request);
+        return response()->json(['status'=>false,'message'=>'Access Denied']);
     }
 }
