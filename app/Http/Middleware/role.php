@@ -26,9 +26,12 @@ class role
         if ($permission_level == 2) {
             $role = "account_manager";
         }
+        if ($permission_level == 3) {
+            $role = "bdm";
+        }
         if (RoleController::hasAccess($role)) {
             return $next($request);
         }
-        return response()->json(['status'=>false,'message'=>'Access Denied']);
+        return response()->json(['Access Denied'], 400);
     }
 }

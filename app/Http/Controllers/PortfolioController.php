@@ -9,8 +9,9 @@ class PortfolioController extends Controller
 {
     public function listPortfolio()
     {
-    	$model = Portfolio::all();
-    	return $model;
+        $production_portfolios = Portfolio::where('link_type','production')->get();
+    	$development_portfolios = Portfolio::where('link_type','development')->get();
+    	return response()->json(['production_portfolios'=>$production_portfolios,'development_portfolios'=>$development_portfolios]);
     }
 
     public function addPortfolio(Request $request)

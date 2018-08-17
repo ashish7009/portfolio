@@ -8,12 +8,14 @@ use App\Http\Controllers\Controller;
 use JWTAuth;
 use App\User;
 use JWTAuthException;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class UsersController extends Controller
 {
+    use AuthenticatesUsers;
     private $user;
-  
-
+    protected $maxAttempts = 3;
+    protected $decayMinutes = 1;
     public function __construct(User $user){
         $this->user = $user;
     }
@@ -23,7 +25,8 @@ class UsersController extends Controller
         $user = $this->user->create([
           'name' => $request->get('name'),
           'email' => $request->get('email'),
-          'password' => bcrypt($request->get('password'))
+          'password' => bcrypt($request->get('password')),
+          'permission' => $request->get('permission')
         ]);
        
         return response()->json(['status'=>true,'message'=>'User created successfully','data'=>$user]);
@@ -32,8 +35,13 @@ class UsersController extends Controller
     public function login(Request $request){
         $credentials = $request->only('email', 'password');
         $token = null;
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+            return response()->json(['Too many logins'], 400);
+        }
         try {
            if (!$token = JWTAuth::attempt($credentials)) {
+            $this->incrementLoginAttempts($request);
             return response()->json(['invalid_email_or_password'], 422);
            }
         } catch (JWTAuthException $e) {
