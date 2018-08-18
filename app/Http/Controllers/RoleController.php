@@ -17,5 +17,25 @@ class RoleController extends Controller
 		}
 		return false;
     }
-}
+    public function listRoles()
+    {
+    	$model = Role::where('name','!=','admin')->get();
+    	$routeCollection = Route::getRoutes();
+	    $routes = [];
+	    foreach ($routeCollection as $key => $value) {
+	    	// dump($value->action["as"]);
+	    	if($value->action['middleware'][2] == 'role'){
+				array_push($routes,$value->action["as"]);
+			}
+	    }
 
+    	return response()->json(['roles'=>$model,'routes'=>$routes]);
+    }
+    public function updatePermission(Request $request,$id)
+    {	
+    	$model = Role::find($id);
+    	$model->fill($request->except(['token']));
+		$model->save();
+		return response()->json(['status'=>true,'message'=>'Permissions updated','data'=>$model]);
+    }
+}

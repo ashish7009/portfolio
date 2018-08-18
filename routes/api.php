@@ -32,4 +32,7 @@ Route::group(['middleware' => 	['jwt.auth', 'role']], function () {
     Route::get('portfolio/edit/{id}',	['as'=>'edit.portfolio','uses'=>'PortfolioController@editPortfolio']);
     Route::post('portfolio/update/{id}',	['as'=>'update.portfolio','uses'=>'PortfolioController@updatePortfolio']);
     Route::get('portfolio/delete/{id}',	['as'=>'delete.portfolio','uses'=>'PortfolioController@deletePortfolio']);
+
+    Route::get('roles',             ['as'=>'list.roles','uses'=>'RoleController@listRoles']);
+    Route::post('permission/update/{id}',['as'=>'update.permission','uses'=>'RoleController@updatePermission']);
 });

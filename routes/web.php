@@ -14,7 +14,12 @@
 Route::get('/', function () {
     // return view('welcome');
     $routeCollection = Route::getRoutes();
+    $routes = [];
     foreach ($routeCollection as $key => $value) {
-    	dump($value->action["as"]);
+    	// dump($value->action["as"]);
+    	if($value->action['middleware'][2] == 'role'){
+			array_push($routes,$value->action["as"]);
+		}
     }
+    dd($routes);
 });
