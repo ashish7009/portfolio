@@ -31,6 +31,8 @@ Route::group(['middleware' => 	['jwt.auth', 'role']], function () {
     Route::post('portfolio/add',	['as'=>'add.portfolio','uses'=>'PortfolioController@addPortfolio']);
     Route::get('portfolio/edit/{id}',	['as'=>'edit.portfolio','uses'=>'PortfolioController@editPortfolio']);
     Route::post('portfolio/update/{id}',	['as'=>'update.portfolio','uses'=>'PortfolioController@updatePortfolio']);
+    Route::post('portfolio/update/image/{id}',   ['as'=>'update.portfolioImage','uses'=>'PortfolioController@updateImage']);
+    Route::get('portfolio/remove/image/{id}',   ['as'=>'remove.portfolioImage','uses'=>'PortfolioController@removeImage']);
     Route::get('portfolio/delete/{id}',	['as'=>'delete.portfolio','uses'=>'PortfolioController@deletePortfolio']);
 
     Route::get('roles',             ['as'=>'list.roles','uses'=>'RoleController@listRoles']);

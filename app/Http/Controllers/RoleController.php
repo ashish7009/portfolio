@@ -28,8 +28,12 @@ class RoleController extends Controller
 				array_push($routes,$value->action["as"]);
 			}
 	    }
-
-    	return response()->json(['roles'=>$model,'routes'=>$routes]);
+        // $new_array = [];
+        // foreach ($routes as $value){
+        //     $new_array[str_replace('.','_',$value)] = true;
+        // }
+        
+    	return ['roles'=>$model,'routes'=>$routes];
     }
     public function updatePermission(Request $request,$id)
     {	

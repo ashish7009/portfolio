@@ -47,12 +47,27 @@ class UsersController extends Controller
         } catch (JWTAuthException $e) {
             return response()->json(['failed_to_create_token'], 500);
         }
-        return response()->json(compact('token'));
+        $role = $this->getAuthUserRole($token);
+        return response()->json(['token'=>$token,'role'=>$role]);
     }
     public function getAuthUser(Request $request){
         
         $user = JWTAuth::toUser($request->token);
         return response()->json(['result' => $user]);
+    }
+    public function getAuthUserRole($token){
+        $user = JWTAuth::toUser($token);
+        
+        if ($user->permission == 1) {
+            $role = 'admin';
+        }
+        if ($user->permission == 2) {
+            $role = 'account_manager';
+        }
+        if ($user->permission == 3) {
+            $role = 'bdm';   
+        }
+        return $role;
     }
 
     public function listUsers()
