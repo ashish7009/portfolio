@@ -19,14 +19,14 @@ class PortfolioController extends Controller
         $model = new Portfolio;
         if ($request->hasFile('fileItem')) {
             $image = $request->file('fileItem');
-            $name = time().'.'.$image->getClientOriginalExtension();
+            $name = time().$image->getClientOriginalName().'.'.$image->getClientOriginalExtension();
             $destinationPath = public_path('/images');
             $image->move($destinationPath, $name);
             $model->image = $name;
         }
         if ($request->hasFile('projectFile')) {
             $image = $request->file('projectFile');
-            $name = time().'.'.$image->getClientOriginalExtension();
+            $name = time().$image->getClientOriginalName().'.'.$image->getClientOriginalExtension();
             $destinationPath = public_path('/projectBackup');
             $image->move($destinationPath, $name);
             $model->project_backup_file = $name;
